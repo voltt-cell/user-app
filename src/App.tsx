@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import data from "./data.json";
+import { Virtuoso } from "react-virtuoso";
 
 interface User {
   id: number;
@@ -42,24 +43,28 @@ function App() {
       <div className="h-[92vh] flex max-lg:flex-col w-full">
         <div className="w-full lg:max-w-[500px] max-lg:h-[300px] overflow-scroll border-r border-gray-200">
           <ul className="flex flex-col max-lg:flex-row justify-start">
-            {data.map((entry: User) => (
-              <li
-                key={entry.id}
-                className={`border-b border-gray-200 p-6 flex items-start flex-col cursor-pointer ${
-                  selectedUser?.id === entry.id
-                    ? "bg-gray-300 border-r-2 border-r-black"
-                    : ""
-                }`}
-                onClick={() => setSelectedUser(entry)}
-              >
-                <h2 className="text-xl font-semibold py-2">
-                  {entry.full_name}
-                </h2>
-                <p className="text-base text-gray-700 max-lg:hidden">
-                  {entry.description}
-                </p>
-              </li>
-            ))}
+            <Virtuoso
+              style={{ height: "92vh" }}
+              data={data}
+              itemContent={(_, entry) => (
+                <li
+                  key={entry.id}
+                  className={`border-b border-gray-200 p-6 flex items-start flex-col cursor-pointer ${
+                    selectedUser?.id === entry.id
+                      ? "bg-gray-300 border-r-2 border-r-black"
+                      : ""
+                  }`}
+                  onClick={() => setSelectedUser(entry)}
+                >
+                  <h2 className="text-xl font-semibold py-2">
+                    {entry.full_name}
+                  </h2>
+                  <p className="text-base text-gray-700 max-lg:hidden">
+                    {entry.description}
+                  </p>
+                </li>
+              )}
+            />
           </ul>
         </div>
         <div className="bg-gray-100 w-full px-10 overflow-y-scroll py-6 ">
